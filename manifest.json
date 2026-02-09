@@ -1,0 +1,43 @@
+{
+    "name": "Sveta Calendar Dashboard",
+    "short_name": "Sveta Calendar",
+    "description": "Современный календарь-дашборд с заметками и напоминаниями",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0f1419",
+    "theme_color": "#4f8cff",
+    "orientation": "portrait-primary",
+    "scope": "./",
+    "lang": "ru",
+    "icons": [
+        {
+            "src": "icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
+        }
+    ],
+    "categories": ["productivity", "utilities"],
+    "shortcuts": [
+        {
+            "name": "Сегодня",
+            "short_name": "Сегодня",
+            "description": "Перейти к сегодняшней дате",
+            "url": "./index.html?view=today"
+        },
+        {
+            "name": "Добавить заметку",
+            "short_name": "Заметка",
+            "description": "Добавить новую заметку",
+            "url": "./index.html?action=add-note"
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false
+}
