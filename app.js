@@ -347,7 +347,7 @@
     const today = state.currentDate;
     elements.dayName.textContent = DAYS_RU[today.getDay()];
     elements.currentDate.textContent = today.getDate();
-    elements.monthYear.textContent = `${MONTHS_GENITIVE[today.getMonth()]} ${today.getFullYear()}`;
+    elements.monthYear.textContent = `${MONTHS_RU[today.getMonth()]} ${today.getFullYear()}`;
     updateTodayNotes();
   }
 
@@ -1405,8 +1405,8 @@
   }
 
   function clearSearch() {
-    elements.searchInput.value = "";
-    elements.searchClear.classList.remove("visible");
+    if (elements.searchInput) elements.searchInput.value = "";
+    if (elements.searchClear) elements.searchClear.classList.remove("visible");
     clearSearchResults();
     state.searchQuery = "";
   }
@@ -1584,22 +1584,28 @@
     });
 
     // Search
-    elements.searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.trim();
-      state.searchQuery = query;
-      elements.searchClear.classList.toggle("visible", query.length > 0);
-      clearTimeout(searchDebounceTimer);
-      if (query.length === 0) {
-        clearSearchResults();
-        return;
-      }
-      searchDebounceTimer = setTimeout(() => searchItems(query), 200);
-    });
+    if (elements.searchInput) {
+      elements.searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.trim();
+        state.searchQuery = query;
+        if (elements.searchClear) {
+          elements.searchClear.classList.toggle("visible", query.length > 0);
+        }
+        clearTimeout(searchDebounceTimer);
+        if (query.length === 0) {
+          clearSearchResults();
+          return;
+        }
+        searchDebounceTimer = setTimeout(() => searchItems(query), 200);
+      });
+    }
 
-    elements.searchClear.addEventListener("click", () => {
-      clearSearch();
-      elements.searchInput.focus();
-    });
+    if (elements.searchClear) {
+      elements.searchClear.addEventListener("click", () => {
+        clearSearch();
+        if (elements.searchInput) elements.searchInput.focus();
+      });
+    }
 
     // Close search results when clicking outside
     document.addEventListener("click", (e) => {
@@ -1648,7 +1654,7 @@
     const mobileFab = document.getElementById("mobileFab");
     if (mobileFab) {
       mobileFab.addEventListener("click", () => {
-        openModal("note");
+        openModal("notes");
       });
     }
 
@@ -1685,23 +1691,28 @@
     let saveTimer = null;
     let hideTimer = null;
 
+    const saveScratchpad = () => {
+      try {
+        localStorage.setItem(SCRATCHPAD_KEY, textarea.value);
+        savedIndicator.textContent = "✓ Сохранено";
+        savedIndicator.classList.add("visible");
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          savedIndicator.classList.remove("visible");
+        }, 2000);
+      } catch (e) {
+        /* ignore */
+      }
+    };
+
     textarea.addEventListener("input", () => {
       clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        try {
-          localStorage.setItem(SCRATCHPAD_KEY, textarea.value);
-          // Show saved indicator
-          savedIndicator.textContent = "✓ Сохранено";
-          savedIndicator.classList.add("visible");
-          clearTimeout(hideTimer);
-          hideTimer = setTimeout(() => {
-            savedIndicator.classList.remove("visible");
-          }, 2000);
-        } catch (e) {
-          /* ignore */
-        }
-      }, 600);
+      saveTimer = setTimeout(saveScratchpad, 600);
     });
+
+    // Save immediately on blur or change
+    textarea.addEventListener("blur", saveScratchpad);
+    textarea.addEventListener("change", saveScratchpad);
   }
 
   // ========================================
