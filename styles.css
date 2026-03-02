@@ -2637,6 +2637,42 @@ textarea:focus-visible {
   color: var(--accent-blue);
 }
 
+.scratchpad-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.scratchpad-colors {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full, 16px);
+  border: 1px solid var(--border-color);
+}
+
+.scratchpad-colors .color-btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.scratchpad-colors .color-btn:hover {
+  transform: scale(1.2);
+}
+
+.scratchpad-colors .color-btn.active {
+  border-color: white;
+  box-shadow: 0 0 6px currentColor;
+  transform: scale(1.1);
+}
+
 .scratchpad-saved {
   font-size: 0.6875rem;
   color: var(--text-muted);

@@ -1675,15 +1675,33 @@
   // Scratchpad (Quick Notepad)
   // ========================================
   const SCRATCHPAD_KEY = "sveta_scratchpad";
+  const SCRATCHPAD_COLOR_KEY = "sveta_scratchpad_color";
 
   function initScratchpad() {
     const textarea = document.getElementById("scratchpadText");
     const savedIndicator = document.getElementById("scratchpadSaved");
+    const colorContainer = document.getElementById("scratchpadColors");
     if (!textarea) return;
 
-    // Load saved text
+    // Load saved text and color
     try {
       textarea.value = localStorage.getItem(SCRATCHPAD_KEY) || "";
+      const savedColor = localStorage.getItem(SCRATCHPAD_COLOR_KEY) || "var(--text-primary)";
+      textarea.style.color = savedColor;
+
+      if (colorContainer) {
+        const colorBtns = colorContainer.querySelectorAll(".color-btn");
+        let found = false;
+        colorBtns.forEach((btn) => {
+          if (btn.dataset.color === savedColor) {
+            btn.classList.add("active");
+            found = true;
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+        if (!found && colorBtns.length > 0) colorBtns[0].classList.add("active");
+      }
     } catch (e) {
       /* ignore */
     }
@@ -1713,6 +1731,26 @@
     // Save immediately on blur or change
     textarea.addEventListener("blur", saveScratchpad);
     textarea.addEventListener("change", saveScratchpad);
+
+    // Color picker setup
+    if (colorContainer) {
+      colorContainer.addEventListener("click", (e) => {
+        const btn = e.target.closest(".color-btn");
+        if (!btn) return;
+
+        colorContainer.querySelectorAll(".color-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const color = btn.dataset.color;
+        textarea.style.color = color;
+
+        try {
+          localStorage.setItem(SCRATCHPAD_COLOR_KEY, color);
+        } catch (err) {
+          /* ignore */
+        }
+      });
+    }
   }
 
   // ========================================

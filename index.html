@@ -71,7 +71,17 @@
                         </svg>
                         <span>Блокнот</span>
                     </div>
-                    <span id="scratchpadSaved" class="scratchpad-saved"></span>
+                    <div class="scratchpad-actions">
+                        <div class="scratchpad-colors" id="scratchpadColors">
+                            <button class="color-btn active" data-color="var(--text-primary)" style="background: var(--text-primary)" title="По умолчанию"></button>
+                            <button class="color-btn" data-color="#eab308" style="background: #eab308" title="Желтый"></button>
+                            <button class="color-btn" data-color="#22c55e" style="background: #22c55e" title="Зеленый"></button>
+                            <button class="color-btn" data-color="#3b82f6" style="background: #3b82f6" title="Синий"></button>
+                            <button class="color-btn" data-color="#ef4444" style="background: #ef4444" title="Красный"></button>
+                            <button class="color-btn" data-color="#ec4899" style="background: #ec4899" title="Розовый"></button>
+                        </div>
+                        <span id="scratchpadSaved" class="scratchpad-saved"></span>
+                    </div>
                 </div>
                 <textarea id="scratchpadText" class="scratchpad-textarea" placeholder="Запиши здесь что-нибудь..."></textarea>
             </div>
